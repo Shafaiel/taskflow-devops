@@ -1,0 +1,9 @@
+.env
+node_modules/
+tests/screenshots/
+__pycache__/
+*.pyc
+.venv/
+evidence/
+*.pdf
+.vscode/

@@ -1,0 +1,72 @@
+name: taskflow
+
+services:
+  # ---------- Database ----------
+  db:
+    image: mysql:8.0
+    container_name: taskflow-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql                               # named volume -> data persists
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro # schema + seed on first start
+    networks:
+      - appnet
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ---------- Back end (Node.js + Express) ----------
+  api:
+    build:
+      context: ./backend
+    image: taskflow-api:1.0
+    container_name: taskflow-api
+    restart: unless-stopped
+    environment:
+      DB_HOST: db            # service name, resolved by Docker DNS
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SERVER_NAME: ${SERVER_NAME:-}
+      AVAILABILITY_ZONE: ${AVAILABILITY_ZONE:-local}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - appnet
+    # no "ports": the API is only reachable through nginx on the internal network
+
+  # ---------- Front end + reverse proxy (Nginx) ----------
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: taskflow-web:1.0
+    container_name: taskflow-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-80}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - appnet
+
+volumes:
+  mysql_data:
+    name: taskflow_mysql_data
+
+networks:
+  appnet:
+    name: taskflow_appnet
+    driver: bridge

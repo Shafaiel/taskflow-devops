@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1 id="page-heading">Dashboard</h1>
+        <p>An overview of your progress.</p>
+      </div>
+      <a class="btn" href="/tasks.html">Go to tasks</a>
+    </div>
+
+    <div class="stats-grid">
+      <div class="card stat"><div class="label">Total tasks</div><div class="value" id="stat-total">–</div></div>
+      <div class="card stat ok"><div class="label">Completed</div><div class="value" id="stat-done">–</div></div>
+      <div class="card stat warn"><div class="label">Pending</div><div class="value" id="stat-pending">–</div></div>
+      <div class="card stat bad"><div class="label">Overdue</div><div class="value" id="stat-overdue">–</div></div>
+    </div>
+
+    <div class="dash-grid">
+      <section class="card">
+        <h2>Completion rate</h2>
+        <div class="big-percent" id="stat-rate">0%</div>
+        <div class="progress"><div id="rate-bar" style="width:0%"></div></div>
+        <p style="color:var(--muted);font-size:.9rem" id="high-pending-text"></p>
+      </section>
+
+      <section class="card">
+        <h2>Upcoming deadlines</h2>
+        <ul class="upcoming" id="upcoming-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Progress by category</h2>
+        <div id="category-bars"></div>
+      </section>
+
+      <section class="card">
+        <h2>Tasks by priority</h2>
+        <div id="priority-bars"></div>
+      </section>
+    </div>
+  </main>
+  <footer>TaskFlow &middot; Node.js + Express + MySQL &middot; Docker Compose on AWS EC2</footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

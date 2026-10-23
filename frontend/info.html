@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Server Info</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1 id="page-heading">Server Info</h1>
+        <p>Which EC2 instance / container served this request. Open in a new private window (or use the curl loop in the README) to see the load balancer switch servers.</p>
+      </div>
+      <button class="btn" id="refresh-btn">Refresh</button>
+    </div>
+
+    <section class="card info-hero">
+      <span class="dot" id="db-dot"></span>
+      <div>
+        <div style="color:var(--muted);font-size:.85rem">Served by</div>
+        <div class="server-name" id="server-name">…</div>
+      </div>
+    </section>
+
+    <div class="dash-grid">
+      <section class="card">
+        <h2>Application</h2>
+        <div class="kv" id="app-info"></div>
+      </section>
+      <section class="card">
+        <h2>Database</h2>
+        <div class="kv" id="db-info"></div>
+      </section>
+      <section class="card" style="grid-column:1/-1">
+        <h2>Request history (this browser tab)</h2>
+        <div class="history" id="history"></div>
+      </section>
+    </div>
+  </main>
+  <footer>TaskFlow &middot; Node.js + Express + MySQL &middot; Docker Compose on AWS EC2</footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/info.js"></script>
+</body>
+</html>

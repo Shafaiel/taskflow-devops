@@ -1,0 +1,20 @@
+{
+  "name": "taskflow-api",
+  "version": "1.0.0",
+  "description": "TaskFlow REST API - Node.js + Express + MySQL",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.5"
+  }
+}

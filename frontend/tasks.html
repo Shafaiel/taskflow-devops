@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Tasks</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1 id="page-heading">My Tasks</h1>
+        <p id="welcome-text">Plan, prioritize and track your work.</p>
+      </div>
+    </div>
+
+    <div class="tasks-layout">
+      <!-- New task form -->
+      <section class="card">
+        <h2>Add a new task</h2>
+        <form id="task-form">
+          <div class="form-row">
+            <label for="task-title">Title</label>
+            <input id="task-title" maxlength="120" required placeholder="e.g. Configure Auto Scaling">
+          </div>
+          <div class="form-row">
+            <label for="task-desc">Description</label>
+            <textarea id="task-desc" placeholder="Optional details"></textarea>
+          </div>
+          <div class="form-row">
+            <label for="task-priority">Priority</label>
+            <select id="task-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="task-category">Category</label>
+            <input id="task-category" list="category-list" placeholder="General">
+            <datalist id="category-list"></datalist>
+          </div>
+          <div class="form-row">
+            <label for="task-due">Due date</label>
+            <input id="task-due" type="date">
+          </div>
+          <button class="btn btn-block" id="add-task-btn" type="submit">+ Add Task</button>
+        </form>
+      </section>
+
+      <!-- Task list -->
+      <section>
+        <div class="toolbar">
+          <input id="search-input" type="search" placeholder="Search tasks…">
+          <select id="filter-status">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="done">Done</option>
+            <option value="overdue">Overdue</option>
+          </select>
+          <select id="filter-priority">
+            <option value="">All priorities</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <select id="filter-category">
+            <option value="">All categories</option>
+          </select>
+          <select id="sort-by">
+            <option value="created">Newest first</option>
+            <option value="due">Due date</option>
+            <option value="priority">Priority</option>
+          </select>
+        </div>
+        <div class="count-line" id="task-count"></div>
+        <ul class="task-list" id="task-list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Edit modal -->
+  <div class="modal-backdrop" id="edit-modal">
+    <div class="card modal">
+      <h2>Edit task</h2>
+      <form id="edit-form">
+        <input type="hidden" id="edit-id">
+        <div class="form-row">
+          <label for="edit-title">Title</label>
+          <input id="edit-title" maxlength="120" required>
+        </div>
+        <div class="form-row">
+          <label for="edit-desc">Description</label>
+          <textarea id="edit-desc"></textarea>
+        </div>
+        <div class="form-grid form-row">
+          <div>
+            <label for="edit-priority">Priority</label>
+            <select id="edit-priority">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div>
+            <label for="edit-status">Status</label>
+            <select id="edit-status">
+              <option value="pending">Pending</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div>
+            <label for="edit-due">Due date</label>
+            <input id="edit-due" type="date">
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="edit-category">Category</label>
+          <input id="edit-category" list="category-list">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="edit-cancel">Cancel</button>
+          <button type="submit" class="btn" id="edit-save">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>TaskFlow &middot; Node.js + Express + MySQL &middot; Docker Compose on AWS EC2</footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/tasks.js"></script>
+</body>
+</html>

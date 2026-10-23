@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="auth-wrap">
+    <div class="card auth-card">
+      <div class="brand"><span class="logo">TF</span><span id="app-title">TaskFlow</span></div>
+      <p class="auth-sub">Organize your work. Deployed with Docker on AWS.</p>
+
+      <div class="tabs">
+        <button type="button" id="tab-login" class="active">Login</button>
+        <button type="button" id="tab-register">Register</button>
+      </div>
+
+      <form id="login-form" autocomplete="on">
+        <div class="form-row">
+          <label for="login-username">Username</label>
+          <input id="login-username" name="username" required>
+        </div>
+        <div class="form-row">
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" required>
+        </div>
+        <div class="form-error" id="login-error"></div>
+        <button class="btn btn-block" id="login-btn" type="submit">Login</button>
+      </form>
+
+      <form id="register-form" hidden>
+        <div class="form-row">
+          <label for="reg-fullname">Full name</label>
+          <input id="reg-fullname" name="fullName" placeholder="Ali Khan">
+        </div>
+        <div class="form-row">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" name="username" required placeholder="3-30 letters, numbers or _">
+        </div>
+        <div class="form-row">
+          <label for="reg-password">Password</label>
+          <input id="reg-password" name="password" type="password" required placeholder="At least 6 characters">
+        </div>
+        <div class="form-error" id="register-error"></div>
+        <button class="btn btn-block" id="register-btn" type="submit">Create account</button>
+      </form>
+
+      <p class="hint">Demo account: <strong>demo</strong> / <strong>demo123</strong></p>
+    </div>
+  </main>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

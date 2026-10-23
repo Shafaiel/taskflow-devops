@@ -1,0 +1,9 @@
+.git
+.env
+backend/node_modules
+tests
+docs
+scripts
+aws
+evidence
+*.pdf
