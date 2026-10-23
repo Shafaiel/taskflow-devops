@@ -14,6 +14,7 @@ import time
 import unittest
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
@@ -41,7 +42,8 @@ class TaskFlowE2ETest(unittest.TestCase):
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         cls.driver = webdriver.Chrome(options=options)  # Selenium Manager finds chromedriver
-        cls.wait = WebDriverWait(cls.driver, 15)
+        # Ignore "stale element" errors while the page re-renders the task list
+        cls.wait = WebDriverWait(cls.driver, 15, ignored_exceptions=[NoSuchElementException, StaleElementReferenceException])
         os.makedirs(SCREENSHOT_DIR, exist_ok=True)
         print(f"\nTesting {BASE_URL} as user '{USERNAME}'\n")
 

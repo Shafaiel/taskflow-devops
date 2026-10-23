@@ -12,71 +12,32 @@ Put every screenshot in one folder, for example `Desktop\devops-screenshots`.
 
 ---
 
-## PART 1: Local screenshots (on your laptop), about 15 min
+## ✅ PARTS 1-3: ALREADY DONE BY CLAUDE
 
-Docker Desktop must be **open and running** (green whale icon).
+You don't need to do these. Here is what was done:
 
-- [ ] **1.1 Start the app**
-  ```powershell
-  docker compose up -d --build
-  docker compose ps
-  ```
-  📸 **Screenshot:** the `docker compose ps` output (3 containers, all saying **healthy**)
+**Part 1: Local evidence.** Everything is saved in the `evidence` folder:
 
-- [ ] **1.2 Open the app in a browser:** go to http://localhost
-  - Log in with **demo** / **demo123**
-  - 📸 **Screenshot:** the Tasks page, the Dashboard page and the Server Info page
+| File | For task |
+|---|---|
+| `evidence/01_compose_up_and_ps.txt` | Task 5: Compose (3 healthy containers, network, volume) |
+| `evidence/02_docker_build_images_run.txt` | Task 3: docker build, docker images, docker run |
+| `evidence/03_linux_admin_LOCAL_PRACTICE.txt` | Task 2: practice run only (do the real one on EC2 in Part 6) |
+| `evidence/04_volume_persistence.txt` | Task 4: ends with **DATA PERSISTED** |
+| `evidence/06_selenium_local.txt` | Task 6: **10/10 PASS** |
+| `evidence/app_1_login.png` … `app_5_health.png` | Screenshots of the app pages |
+| `evidence/selenium_screenshots/` | Screenshots taken by the Selenium test |
 
-- [ ] **1.3 Docker image evidence (Task 3)**
-  ```powershell
-  docker build -t taskflow-api:manual ./backend
-  docker images
-  docker run -d --name api-manual --network taskflow_appnet --env-file .env -e DB_HOST=db -p 3001:3000 taskflow-api:manual
-  docker ps
-  ```
-  Open http://localhost:3001/api/health in the browser. It should show `{"status":"ok","db":"up"}`.
-  📸 **Screenshot:** the terminal output and the browser
-  Then remove it:
-  ```powershell
-  docker rm -f api-manual
-  ```
+> 💡 Teachers usually prefer real terminal screenshots. If you want them, run these yourself in the VS Code terminal and take a screenshot:
+> `docker compose ps` · `docker images` · `python tests/selenium_test.py http://localhost --headed`
 
-- [ ] **1.4 Selenium test locally (Task 6)**
-  ```powershell
-  python tests/selenium_test.py http://localhost --headed
-  ```
-  A Chrome window opens and runs the test by itself. At the end it should say **10/10 passed → PASS**.
-  📸 **Screenshot:** the terminal result
+**Part 2: GitHub.** The code is live at **https://github.com/Shafaiel/taskflow-devops** (public).
+After any code change, just run `git add -A`, then `git commit -m "message"`, then `git push`.
 
----
-
-## PART 2: Put the code on GitHub, about 5 min
-
-- [ ] **2.1** Go to https://github.com/new
-  - Repository name: `taskflow-devops`
-  - Choose **Public** (AWS must be able to download it)
-  - **Do NOT** tick "Add README"
-  - Click **Create repository**
-
-- [ ] **2.2** In the VS Code terminal, run these (replace `YOUR_USERNAME` with your GitHub username):
-  ```powershell
-  git remote add origin https://github.com/YOUR_USERNAME/taskflow-devops.git
-  git push -u origin main
-  ```
-  If a login window appears, sign in to GitHub.
-
-- [ ] **2.3** Refresh the GitHub page. You should see all the folders (backend, frontend, nginx…).
-
----
-
-## PART 3: Prepare the startup script, about 2 min
-
-- [ ] **3.1** In VS Code, open `aws/user-data.sh`
-- [ ] **3.2** On **line 10**, change `YOUR_GITHUB_USERNAME` to your real GitHub username:
-  ```bash
-  REPO_URL="https://github.com/YOUR_USERNAME/taskflow-devops.git"
-  ```
-- [ ] **3.3** Save the file (Ctrl+S). You'll copy the **whole file** in step 4.3.
+**Part 3: Startup script.** It's ready: **`aws/user-data.READY.sh`**
+- It already has your GitHub URL and strong random passwords.
+- It is **NOT** uploaded to GitHub (it holds secrets), so it exists only on your laptop.
+- It was tested on a simulated Amazon Linux 2023 server: the app started and Selenium passed 10/10.
 
 ---
 
@@ -114,7 +75,7 @@ Left menu: **Instances → Launch Templates → Create launch template**
 - [ ] **Network settings → Security groups:** choose `taskflow-ec2-sg`
 - [ ] Scroll down → open **Advanced details**
   - **Metadata version:** `V2 only (token required)`
-  - **User data** (the big box at the bottom): **paste the WHOLE `aws/user-data.sh` file**
+  - **User data** (the big box at the bottom): open **`aws/user-data.READY.sh`** in VS Code → **Ctrl+A** → **Ctrl+C** → click in this box → **Ctrl+V**
 - [ ] Click **Create launch template**
 
 ### 4.4 Create the target group (the list of servers for the Load Balancer)
@@ -142,7 +103,7 @@ Left menu: **Auto Scaling → Auto Scaling Groups → Create Auto Scaling group*
   - Choose **Attach to an existing load balancer**
   - **Choose from your load balancer target groups** → `taskflow-tg`
   - Tick ✅ **Turn on Elastic Load Balancing health checks**
-  - Health check grace period: **300** seconds
+  - Health check grace period: **600** seconds (10 min - the first boot builds the images)
   - → Next
 - [ ] **Step 4:** Desired **2**, Min **2**, Max **4**
   - Scaling: **Target tracking scaling policy**, Metric **Average CPU utilization**, Target value **50**
@@ -151,7 +112,7 @@ Left menu: **Auto Scaling → Auto Scaling Groups → Create Auto Scaling group*
 - [ ] **Step 6 (tags):** Add tag: Key `Name`, Value `taskflow-instance` → Next
 - [ ] **Create Auto Scaling group**
 
-### 4.7 Wait and check ⏳ (about 5-8 minutes)
+### 4.7 Wait and check ⏳ (about 8-10 minutes)
 - [ ] Go to **Target Groups → taskflow-tg → Targets** tab. Wait until **both** instances show **healthy** (click refresh 🔄).
 - [ ] Open a browser and go to `http://YOUR-ALB-DNS` (http, not https).
   The TaskFlow login page should appear 🎉

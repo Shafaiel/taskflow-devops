@@ -141,7 +141,7 @@ EC2 → Key Pairs → Create `taskflow-key` (.pem). You'll use it for SSH.
 1. Name `taskflow-asg`, launch template `taskflow-lt` (Latest)
 2. Network: default VPC, select the **same 2+ AZ subnets**
 3. Load balancing: **Attach to an existing load balancer** → target group `taskflow-tg`
-   - Tick **Turn on Elastic Load Balancing health checks**, with a grace period of **300 s**
+   - Tick **Turn on Elastic Load Balancing health checks**, with a grace period of **600 s**
 4. Group size: **Desired 2, Min 2, Max 4**
 5. Scaling: **Target tracking policy**, Average CPU utilization **50%**
 6. Add tag `Name = taskflow-instance`, then Create

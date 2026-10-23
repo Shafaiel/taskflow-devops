@@ -27,7 +27,7 @@ Short answers tied to **this project**. Practise saying them out loud.
 
 **Security groups?** Stateful virtual firewalls. The ALB SG allows port 80 from the internet. The EC2 SG allows port 80 **only from the ALB's SG**, plus SSH from my IP, so users can't bypass the ALB.
 
-**Grace period?** 300 s. It gives a new instance time to install Docker and build images before health checks can mark it unhealthy.
+**Grace period?** 600 s. It gives a new instance time to install Docker and build images before health checks can mark it unhealthy.
 
 **How do you prove load balancing?** The `/api/info` endpoint returns the **instance ID**, read from EC2 instance metadata. A curl loop shows two different instance IDs.
 

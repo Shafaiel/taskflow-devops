@@ -33,7 +33,7 @@ fi
 dnf update -y
 dnf install -y docker git
 systemctl enable --now docker
-usermod -aG docker ec2-user
+usermod -aG docker ec2-user || true
 
 ARCH=$(uname -m)                                  # x86_64 or aarch64
 BUILDX_ARCH=$([ "$ARCH" = "aarch64" ] && echo arm64 || echo amd64)
@@ -71,7 +71,7 @@ SERVER_NAME="${INSTANCE_ID} (${PRIVATE_IP})"
 AVAILABILITY_ZONE=${AZ}
 EOF
 chmod 600 .env
-chown -R ec2-user:ec2-user "$APP_DIR"
+chown -R ec2-user:ec2-user "$APP_DIR" || true
 
 # 6. Build images and start the stack (nginx + api + db)
 docker compose up -d --build --wait

@@ -7,3 +7,4 @@ __pycache__/
 evidence/
 *.pdf
 .vscode/
+aws/user-data.READY.sh
